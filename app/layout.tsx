@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
+import AdSenseScript from "@/components/AdSenseScript";
 import AdSenseDebug from "@/components/AdSenseDebug";
 
 export const metadata: Metadata = {
@@ -17,22 +17,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+  // Get AdSense ID - this will be available at build time
+  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
 
   return (
     <html lang="tr">
       <body className="antialiased">
-        {adsenseId && (
-          <>
-            <Script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
-              strategy="afterInteractive"
-              crossOrigin="anonymous"
-            />
-            <AdSenseDebug />
-          </>
-        )}
+        <AdSenseScript />
+        <AdSenseDebug />
         <SubscriptionProvider>
           {children}
         </SubscriptionProvider>

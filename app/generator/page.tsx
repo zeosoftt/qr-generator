@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import QRCodeGenerator from '@/components/QRCodeGenerator';
 import AdRectangle from '@/components/AdRectangle';
+import { getAdSlot } from '@/lib/adsense';
 
 export default function GeneratorPage() {
   return (
@@ -69,16 +70,20 @@ export default function GeneratorPage() {
         </div>
 
         {/* Ad Rectangle - Before Generator */}
-        <div className="mb-8 flex justify-center">
-          <AdRectangle slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_GENERATOR || '1234567890'} />
-        </div>
+        {getAdSlot('GENERATOR') && (
+          <div className="mb-8 flex justify-center">
+            <AdRectangle slot={getAdSlot('GENERATOR')} />
+          </div>
+        )}
         
         <QRCodeGenerator />
 
         {/* Ad Rectangle - After Generator */}
-        <div className="mt-8 flex justify-center">
-          <AdRectangle slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_GENERATOR_BOTTOM || '1234567890'} />
-        </div>
+        {getAdSlot('GENERATOR_BOTTOM') && (
+          <div className="mt-8 flex justify-center">
+            <AdRectangle slot={getAdSlot('GENERATOR_BOTTOM')} />
+          </div>
+        )}
       </div>
     </main>
   );

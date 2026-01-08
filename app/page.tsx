@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import AdBanner from '@/components/AdBanner';
 import AdRectangle from '@/components/AdRectangle';
+import { getAdSlot } from '@/lib/adsense';
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -118,7 +119,7 @@ export default function Home() {
       </section>
 
       {/* Ad Banner - After Hero */}
-      <AdBanner slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_HERO || '1234567890'} />
+      {getAdSlot('HERO') && <AdBanner slot={getAdSlot('HERO')} />}
 
       {/* Features Section */}
       <section id="features" className="py-20 px-4 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm scroll-mt-20">
@@ -203,11 +204,13 @@ export default function Home() {
       </section>
 
       {/* Ad Rectangle - In Features */}
-      <div className="container mx-auto px-4">
-        <div className="flex justify-center">
-          <AdRectangle slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_FEATURES || '1234567890'} />
+      {getAdSlot('FEATURES') && (
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center">
+            <AdRectangle slot={getAdSlot('FEATURES')} />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* How It Works Section */}
       <section className="py-20 px-4">
@@ -274,7 +277,7 @@ export default function Home() {
       </section>
 
       {/* Ad Banner - Before Footer */}
-      <AdBanner slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_FOOTER || '1234567890'} />
+      {getAdSlot('FOOTER') && <AdBanner slot={getAdSlot('FOOTER')} />}
 
       {/* Footer */}
       <footer className="py-12 px-4 border-t border-gray-200 dark:border-gray-800">

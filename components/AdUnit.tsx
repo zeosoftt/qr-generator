@@ -26,7 +26,10 @@ export default function AdUnit({
     const pushAd = () => {
       try {
         const adElement = adRef.current;
-        if (!adElement) return;
+        if (!adElement) {
+          console.warn('AdSense: Ad element not found');
+          return;
+        }
 
         // Check if element is visible and has width
         const rect = adElement.getBoundingClientRect();
@@ -37,12 +40,22 @@ export default function AdUnit({
         }
 
         // Check if adsbygoogle is available
-        if (typeof window !== 'undefined' && (window as any).adsbygoogle && !hasPushed.current) {
-          (window as any).adsbygoogle.push({});
-          hasPushed.current = true;
+        if (typeof window !== 'undefined') {
+          if (!(window as any).adsbygoogle) {
+            console.warn('AdSense: adsbygoogle not available yet, retrying...');
+            setTimeout(pushAd, 500);
+            return;
+          }
+
+          if (!hasPushed.current) {
+            console.log('📢 Pushing AdSense ad:', { slot: adSlot, element: adElement });
+            (window as any).adsbygoogle.push({});
+            hasPushed.current = true;
+            console.log('✅ AdSense ad pushed successfully');
+          }
         }
       } catch (err) {
-        console.error('AdSense error:', err);
+        console.error('❌ AdSense push error:', err);
       }
     };
 
@@ -90,7 +103,10 @@ export default function AdUnit({
 
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
 
-  if (!adsenseId || !adSlot) {
+  // Check if slot is placeholder (don't render placeholder slots)
+  const isPlaceholder = !adSlot || adSlot === '1234567890' || adSlot === '1234567891' || adSlot === '1234567892' || adSlot === '1234567893' || adSlot === '1234567894';
+
+  if (!adsenseId || !adSlot || isPlaceholder) {
     return null;
   }
 
