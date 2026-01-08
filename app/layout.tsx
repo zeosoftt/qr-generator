@@ -7,6 +7,9 @@ import AdSenseDebug from "@/components/AdSenseDebug";
 export const metadata: Metadata = {
   title: "QR Code Generator - Modern & Free",
   description: "Generate custom QR codes for URLs, text, WiFi, email and more. Download as PNG or SVG.",
+  verification: {
+    google: 'pub-5570650174796895',
+  },
 };
 
 export default function RootLayout({
