@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import QRCodeGenerator from '@/components/QRCodeGenerator';
+import AdRectangle from '@/components/AdRectangle';
 
 export default function GeneratorPage() {
   return (
@@ -66,8 +67,18 @@ export default function GeneratorPage() {
             Support for URLs, text, WiFi, email, phone, SMS and more
           </p>
         </div>
+
+        {/* Ad Rectangle - Before Generator */}
+        <div className="mb-8 flex justify-center">
+          <AdRectangle slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_GENERATOR || '1234567890'} />
+        </div>
         
         <QRCodeGenerator />
+
+        {/* Ad Rectangle - After Generator */}
+        <div className="mt-8 flex justify-center">
+          <AdRectangle slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_GENERATOR_BOTTOM || '1234567890'} />
+        </div>
       </div>
     </main>
   );
